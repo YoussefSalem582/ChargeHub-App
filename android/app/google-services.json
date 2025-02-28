@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "563160830766",
+    "project_id": "chargehub-eb425",
+    "storage_bucket": "chargehub-eb425.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:563160830766:android:f3cbf4e41eb7ebca7720bf",
+        "android_client_info": {
+          "package_name": "com.example.chargehub"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2Fe7c5-7warjjMJU1Omqlv5B2h1vDjSw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
