@@ -1,0 +1,2 @@
+D:/Courses/WE/we_project/chargehub/android/app/.cxx/Debug/4f2f2c35/x86/CMakeFiles/edit_cache.dir
+D:/Courses/WE/we_project/chargehub/android/app/.cxx/Debug/4f2f2c35/x86/CMakeFiles/rebuild_cache.dir
