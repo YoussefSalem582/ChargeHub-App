@@ -50,21 +50,32 @@ A Flutter-based mobile app for locating EV charging stations and gas stations, f
 
 ## Usage 🚀
 
-1. **Sign Up/Login**:  
-   ![Auth Screens](https://via.placeholder.com/300x600?text=Login/Signup+Screen)
+1. **Sign Up/Login**:
+<img src="https://github.com/user-attachments/assets/4ceeb0e2-b7f1-444e-8298-68bc65e5378e" width="300" height="600">
+<img src="https://github.com/user-attachments/assets/7429e884-e7a1-4aba-a9e0-00281dcb2f25" width="300" height="600">
 
-2. **Home Page**:  
-   - Access the map or car gallery via buttons or the app menu.  
-   ![Home](https://via.placeholder.com/300x600?text=Home+Screen)
+3. **Home Page**:  
+   - Access the map or car gallery via buttons or the app menu.
+   <img src="https://github.com/user-attachments/assets/1700f76d-139f-4cd0-b3b7-c4c6d2c57d53" width="300" height="600">
 
-3. **Map Screen**:  
+4. **Map Screen**:  
    - Tap anywhere to add a station.  
-   - Tap markers to view details.  
-   ![Map](https://via.placeholder.com/300x600?text=Map+Screen)
+   - Tap markers to view details.
+   <img src="https://github.com/user-attachments/assets/5eabe59f-8b1f-4003-b812-1f9be0296ad8" width="300" height="600">
 
-4. **Car Gallery**:  
+5. **Car Gallery**:  
    - Browse EV/gas cars.  
-   ![Gallery](https://via.placeholder.com/300x600?text=Car+Gallery)
+   <img src="https://github.com/user-attachments/assets/c0175616-140a-4a5b-8e7a-e5ac940739e4" width="300" height="600">
+
+   - EV cars
+   <img src="https://github.com/user-attachments/assets/02c60054-4311-4ba1-bd3c-b72e765b43d4" width="300" height="600">
+   <img src="https://github.com/user-attachments/assets/7f9a33ef-93fb-450c-98c6-442b6da8968b" width="300" height="600">
+
+   - Gas cars
+   <img src="https://github.com/user-attachments/assets/3f9b8926-2e7d-4427-875d-c610709036c6" width="300" height="600">
+   <img src="https://github.com/user-attachments/assets/33e3c092-9c9f-41ca-839b-ab7e37b4b217" width="300" height="600">
+
+
 
 ## Contributing 🤝
 
