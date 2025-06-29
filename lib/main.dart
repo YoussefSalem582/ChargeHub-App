@@ -1,4 +1,4 @@
-import 'package:chargehub/pages/splachScreen.dart';
+import 'package:chargehub/pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,10 +15,10 @@ void main() async {
       MultiBlocProvider(
         providers: [
           BlocProvider<EVBloc>(
-            create: (context) => EVBloc()..add(FetchStationsEvent()), // Initialize with an event to fetch stations
+            create: (context) => EVBloc()..add(FetchStationsEvent()),
           ),
         ],
-        child: const evApp(),
+        child: const ChargeHubApp(),
       ),
     );
   } catch (e) {
@@ -26,8 +26,8 @@ void main() async {
   }
 }
 
-class evApp extends StatelessWidget {
-  const evApp({super.key});
+class ChargeHubApp extends StatelessWidget {
+  const ChargeHubApp({super.key});
 
   @override
   Widget build(BuildContext context) {

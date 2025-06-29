@@ -1,8 +1,9 @@
-import 'package:chargehub/pages/evHomePage.dart';
+import 'package:chargehub/pages/ev_home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../repeated/button.dart'; // Assuming this is a custom button widget
-import 'SignUp.dart';
+import '../repeated/button.dart';
+import '../services/error_handler.dart';
+import 'signup.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -163,11 +164,7 @@ class _LoginState extends State<Login> {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: btnCal(
-              c: Colors.blue,
-              text: "Log in",
-              event: _login,
-            ),
+            child: btnCal(c: Colors.blue, text: "Log in", event: _login),
           ),
           Padding(
             padding: const EdgeInsets.all(40.0),
@@ -185,10 +182,7 @@ class _LoginState extends State<Login> {
                 child: RichText(
                   text: const TextSpan(
                     text: 'You do not have an account?',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 16.0),
                     children: <TextSpan>[
                       TextSpan(
                         text: '  Sign Up',
@@ -209,9 +203,23 @@ class _LoginState extends State<Login> {
   }
 
   void _login() async {
-    String username = _usernameController.text;
-    String email = _emailController.text;
-    String password = _passwordController.text;
+    String username = _usernameController.text.trim();
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    // Form validation
+    if (username.isEmpty || email.isEmpty || password.isEmpty) {
+      ErrorHandler.showWarningSnackbar(context, 'Please fill in all fields');
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      ErrorHandler.showWarningSnackbar(
+        context,
+        'Please enter a valid email address',
+      );
+      return;
+    }
 
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -220,25 +228,26 @@ class _LoginState extends State<Login> {
       );
 
       if (userCredential.user != null) {
+        ErrorHandler.showSuccessSnackbar(context, 'Login successful!');
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) {
-              return HomePage(username: username);
-            },
-          ),
+          MaterialPageRoute(builder: (context) => HomePage(username: username)),
         );
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         _showSignUpPrompt();
-      } else if (e.code == 'wrong-password') {
-        _showErrorDialog('Incorrect password');
       } else {
-        _showErrorDialog('Login failed. Please try again.');
+        AppError error = ErrorHandler.handleFirebaseAuthError(e);
+        ErrorHandler.showErrorDialog(context, error);
       }
     } catch (e) {
-      _showErrorDialog('An error occurred. Please try again.');
+      AppError error = ErrorHandler.handleGeneralError(e);
+      ErrorHandler.showErrorDialog(context, error);
     }
+  }
+
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 
   void _showSignUpPrompt() {
@@ -246,46 +255,33 @@ class _LoginState extends State<Login> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('No Account Found'),
+          backgroundColor: const Color.fromRGBO(34, 37, 45, 1),
+          title: const Text(
+            'No Account Found',
+            style: TextStyle(color: Colors.white),
+          ),
           content: const Text(
-              'No account found for this email. Would you like to sign up?'),
+            'No account found for this email. Would you like to sign up?',
+            style: TextStyle(color: Colors.white70),
+          ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => SignUp(),
-                  ),
+                  MaterialPageRoute(builder: (context) => SignUp()),
                 );
               },
-              child: const Text('Sign Up'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showErrorDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Error'),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
+              child: const Text(
+                'Sign Up',
+                style: TextStyle(color: Colors.blueAccent),
+              ),
             ),
           ],
         );

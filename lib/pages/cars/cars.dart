@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../evHomePage.dart';
-import 'evCars.dart';
-import 'gasCars.dart';
+import '../ev_home_page.dart';
+import 'ev_cars.dart';
+import 'gas_cars.dart';
 
-class carGalleryPage extends StatelessWidget {
-  const carGalleryPage({super.key});
+class CarGalleryPage extends StatelessWidget {
+  const CarGalleryPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,17 +12,20 @@ class carGalleryPage extends StatelessWidget {
       backgroundColor: const Color.fromRGBO(31, 2, 75, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(31, 2, 75, 1),
-        title:
-            const Text('Car Collection', style: TextStyle(color: Colors.white)),
+        title: const Text(
+          'Car Collection',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => const HomePage(
-                  username: 'back to HomePage',
-                ), // Navigate to CarGalleryPage
+                builder:
+                    (context) => const HomePage(
+                      username: 'back to HomePage',
+                    ), // Navigate to CarGalleryPage
               ),
             ); // Go back to the previous page
           },
@@ -37,12 +40,9 @@ class carGalleryPage extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          evCarsPage(), // Navigate to EVCarsPage
-                    ),
-                  );
+                  Navigator.of(
+                    context,
+                  ).push(MaterialPageRoute(builder: (context) => EvCarsPage()));
                 },
                 child: SizedBox(
                   width: double.infinity,
@@ -65,17 +65,13 @@ class carGalleryPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 40), // Adjust spacing between images
-
             // Second button for Gas Cars
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          gasCarsPage(), // Navigate to GasCarsPage
-                    ),
+                    MaterialPageRoute(builder: (context) => GasCarsPage()),
                   );
                 },
                 child: SizedBox(

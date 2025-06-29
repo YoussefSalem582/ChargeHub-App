@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../repeated/button.dart'; // Assuming this is a custom button widget
-import 'login.dart'; // Importing the login page
+import '../repeated/button.dart';
+import '../services/error_handler.dart';
+import 'login.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -26,7 +27,12 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(31, 2, 75, 1.0), // Same background as login page
+      backgroundColor: const Color.fromRGBO(
+        31,
+        2,
+        75,
+        1.0,
+      ), // Same background as login page
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         children: [
@@ -51,7 +57,7 @@ class _SignUpState extends State<SignUp> {
                 color: Colors.white, // White text to match login
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic, // Italic to match login style
-                fontFamily: 'font1'
+                fontFamily: 'font1',
               ),
             ),
           ),
@@ -64,7 +70,7 @@ class _SignUpState extends State<SignUp> {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic,
-                  fontFamily: 'font1'
+                fontFamily: 'font1',
               ),
             ),
           ),
@@ -76,7 +82,7 @@ class _SignUpState extends State<SignUp> {
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontStyle: FontStyle.italic,
-                  fontFamily: 'font1'
+                fontFamily: 'font1',
               ),
             ),
           ),
@@ -88,7 +94,10 @@ class _SignUpState extends State<SignUp> {
               style: const TextStyle(color: Colors.black),
               controller: _usernameController,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.person, color: Colors.black), // Username icon
+                prefixIcon: const Icon(
+                  Icons.person,
+                  color: Colors.black,
+                ), // Username icon
                 filled: true,
                 fillColor: const Color(0xFFFFFFFF), // White field background
                 border: OutlineInputBorder(
@@ -112,7 +121,10 @@ class _SignUpState extends State<SignUp> {
               style: const TextStyle(color: Colors.black),
               controller: _emailController,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.email, color: Colors.black), // Email icon
+                prefixIcon: const Icon(
+                  Icons.email,
+                  color: Colors.black,
+                ), // Email icon
                 filled: true,
                 fillColor: const Color(0xFFFFFFFF),
                 border: OutlineInputBorder(
@@ -137,7 +149,10 @@ class _SignUpState extends State<SignUp> {
               obscureText: true,
               controller: _passwordController,
               decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.lock, color: Colors.black), // Password icon
+                prefixIcon: const Icon(
+                  Icons.lock,
+                  color: Colors.black,
+                ), // Password icon
                 filled: true,
                 fillColor: const Color(0xFFFFFFFF),
                 border: OutlineInputBorder(
@@ -207,30 +222,52 @@ class _SignUpState extends State<SignUp> {
     String password = _passwordController.text.trim();
     String username = _usernameController.text.trim();
 
+    // Form validation
     if (email.isEmpty || password.isEmpty || username.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
+      ErrorHandler.showWarningSnackbar(context, 'Please fill in all fields');
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      ErrorHandler.showWarningSnackbar(
+        context,
+        'Please enter a valid email address',
+      );
+      return;
+    }
+
+    if (password.length < 6) {
+      ErrorHandler.showWarningSnackbar(
+        context,
+        'Password must be at least 6 characters long',
       );
       return;
     }
 
     try {
-      UserCredential userCredential =
-      await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      UserCredential userCredential = await _auth
+          .createUserWithEmailAndPassword(email: email, password: password);
 
       if (userCredential.user != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Sign Up Successful')),
+        ErrorHandler.showSuccessSnackbar(
+          context,
+          'Account created successfully!',
         );
-        // Navigate to the home page or perform other actions
+        // Navigate to login page
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => const Login()),
+        );
       }
     } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.message}')),
-      );
+      AppError error = ErrorHandler.handleFirebaseAuthError(e);
+      ErrorHandler.showErrorDialog(context, error);
+    } catch (e) {
+      AppError error = ErrorHandler.handleGeneralError(e);
+      ErrorHandler.showErrorDialog(context, error);
     }
+  }
+
+  bool _isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 }
